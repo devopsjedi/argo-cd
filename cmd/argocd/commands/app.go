@@ -1729,7 +1729,15 @@ func formatConditionsSummary(app argoappv1.Application) string {
 		}
 	}
 	items := make([]string, 0)
-	for cndType, cnt := range typeToCnt {
+	sortedCndTypes := make([]string, len(typeToCnt))
+	i := 0
+	for cndType := range typeToCnt {
+		sortedCndTypes[i] = cndType
+		i++
+	}
+	sort.Strings(sortedCndTypes)
+	for _, cndType := range sortedCndTypes {
+		cnt := typeToCnt[cndType]
 		if cnt > 1 {
 			items = append(items, fmt.Sprintf("%s(%d)", cndType, cnt))
 		} else {
